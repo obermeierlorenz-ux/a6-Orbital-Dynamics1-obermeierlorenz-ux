@@ -34,7 +34,7 @@ a = a_0
 
 for i in range (n_steps):#
 
-    r, v, a = vel_verlet(r, v, a)
+    r, v, a = vel_verlet(r, v, a, h, M, G)
 
     t_values.append(t_values[i] + h)
     r_values.append(r)
@@ -51,7 +51,27 @@ y_values = r_values[:, 1]
 
 fig1 = plt.figure()
 ax1 = fig1.add_axes([0.12, 0.12, 0.80, 0.80])
-
-ax1.plt(x_values, y_values, label = 'Orbits')
+ax1.plot(0, 0, marker='*', color='orange',
+         markersize=12, label='Central mass')
+ax1.plot(x_values, y_values, label = 'Orbits')
+ax1.set_xlabel('x')
+ax1.set_ylabel('y')
+ax1.set_title('Circular Orbit Trajectory')
+# same visible scale for x and y
+ax1.set_aspect('equal', adjustable='box')
+ax1.legend()
+ax1.grid()
 plt.plot()
+plt.show()
+
+fig2 = plt.figure()
+ax2 = fig2.add_axes([0.12, 0.12, 0.80, 0.80])
+ax2.plot(t_values, x_values, label = 'x(t)')
+ax2.plot(t_values, y_values, label = 'y(t)')
+ax2.set_xlim(0, t10)
+ax2.set_xlabel('Time t')
+ax2.set_ylabel('Position')
+ax2.set_title('Position Components over Ten Circular Orbits')
+ax2.grid()
+ax2.legend()
 plt.show()
