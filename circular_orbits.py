@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 G = 1
 M = 1
+m = 1
 r0 = 1
 v_c= 1
 T_c = 2*math.pi
@@ -75,3 +76,29 @@ ax2.set_title('Position Components over Ten Circular Orbits')
 ax2.grid()
 ax2.legend()
 plt.show()
+
+#Energie vs time 
+
+K_values = []
+U_values = []
+E_values = []
+
+for iters in t_values: 
+
+    K = 1/2 * M * v_values[iters]**2
+    U = - (G*M*m)/r_values[iters]**2
+    E = K + U 
+
+    K_values.append(K)
+    U_values.append(U)
+    E_values.append(E)
+
+fig3 = plt.figure()
+ax3 = fig3.add_axes([0.12, 0.12, 0.80, 0.80])
+ax3.plot(t_values, K_values, label = 'kinetic energy')
+ax3.plot(t_values, U_values, label = 'potential energy')
+ax3.plot(t_values, E_values, label = 'total mechanical ernergy')
+plt.grid()
+plt.legend()
+plt.plot()
+
