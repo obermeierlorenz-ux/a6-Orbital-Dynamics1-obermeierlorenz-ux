@@ -42,6 +42,8 @@ for i in range (n_steps):#
     v_values.append(v)
     a_values.append(a)
 
+
+
 t_values = np.array(t_values)
 r_values = np.array(r_values)
 v_values = np.array(v_values)
@@ -83,22 +85,37 @@ K_values = []
 U_values = []
 E_values = []
 
-for iters in t_values: 
+for iters in range(len(t_values)): 
 
-    K = 1/2 * M * v_values[iters]**2
-    U = - (G*M*m)/r_values[iters]**2
+
+    K = 1/2 * M * np.sum(v_values[iters]**2)
+
+    # gibt mir den betreag des r Vektors
+    r_magnitude = np.linalg.norm(r_values[iters])
+
+    U = - (G*M*m) / r_magnitude**2
     E = K + U 
 
     K_values.append(K)
     U_values.append(U)
     E_values.append(E)
 
+K_values = np.array(K_values)
+U_values = np.array(U_values)
+E_values = np.array(E_values)
+
+
 fig3 = plt.figure()
 ax3 = fig3.add_axes([0.12, 0.12, 0.80, 0.80])
 ax3.plot(t_values, K_values, label = 'kinetic energy')
 ax3.plot(t_values, U_values, label = 'potential energy')
 ax3.plot(t_values, E_values, label = 'total mechanical ernergy')
+ax3.set_xlabel('Time t')
+ax3.set_ylabel('Energy')
+ax3.set_title('K(t), U(t) and E(t)')
 plt.grid()
 plt.legend()
 plt.plot()
+plt.show()
+
 
