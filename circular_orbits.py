@@ -64,7 +64,6 @@ ax1.set_title('Circular Orbit Trajectory')
 ax1.set_aspect('equal', adjustable='box')
 ax1.legend()
 ax1.grid()
-plt.plot()
 plt.show()
 
 fig2 = plt.figure()
@@ -93,7 +92,7 @@ for iters in range(len(t_values)):
     # gibt mir den betreag des r Vektors
     r_magnitude = np.linalg.norm(r_values[iters])
 
-    U = - (G*M*m) / r_magnitude**2
+    U = - (G*M*m) / r_magnitude
     E = K + U 
 
     K_values.append(K)
@@ -113,9 +112,32 @@ ax3.plot(t_values, E_values, label = 'total mechanical ernergy')
 ax3.set_xlabel('Time t')
 ax3.set_ylabel('Energy')
 ax3.set_title('K(t), U(t) and E(t)')
-plt.grid()
-plt.legend()
-plt.plot()
+ax3.grid()
+ax3.legend()
 plt.show()
 
+#period from trajectory bei looking at the y values
 
+crossing_times = []
+
+for i in range(1, len(y_values)):
+
+    if y_values[i-1] < 0 and y_values [i] >=0: 
+        crossing_time = t_values[i]
+        crossing_times.append(crossing_time)
+
+periods = []
+
+for i in range(len(crossing_times)-1): 
+
+    period = crossing_times[i+1] - crossing_times[i]
+
+    periods.append(period)
+
+#print(periods)
+periods = np.array(periods)
+mean_periods = np.mean(periods)
+
+periods_diff = T_c - mean_periods
+
+print(periods_diff)
