@@ -7,7 +7,7 @@ G = 1
 M = 1
 m = 1
 r0 = 1
-v_c= ((2*G**M)/r0)**(1/2)
+v_c= (2*G**M/r0)**(1/2)
 T_c = 2*math.pi
 
 #t for 1 compete circular 
@@ -29,41 +29,64 @@ a_0= grav_acc(r_0, M, G)
 t_values = [0.0]
 r_values = [r_0]
 v_values12 = [v_12]
-v_values15 = [v_15]
 a_values = [a_0]
 
 r = r_0
 v12 = v_12
-v15 = v_15
 a = a_0
 
+#v12
 for i in range (n_steps):#
 
-    r, v, a = vel_verlet(r, v_12, a, h, M, G)
+    r, v12, a = vel_verlet(r, v_12, a, h, M, G)
 
     t_values.append(t_values[i] + h)
     r_values.append(r)
-    v_values12.append(v)
+    v_values12.append(v12)
     a_values.append(a)
 
 
-
-t_values = np.array(t_values)
-r_values = np.array(r_values)
+t_values12 = np.array(t_values)
+r_values12 = np.array(r_values)
 v_values12 = np.array(v_values12)
-a_values = np.array(a_values)
+a_values12 = np.array(a_values)
 
-x_values = r_values[:, 0]
-y_values = r_values[:, 1]
+#v15
+
+r15 = r_0
+v15 = v_15
+a15 = grav_acc(r15, M, G)
+
+r_values15 = [r15]
+v_values15 = [v15]
+
+for i in range(n_steps):
+
+    r15, v15, a15 = vel_verlet(r15, v15, a15, h, M, G)
+
+    r_values15.append(r15)
+    v_values15.append(v15)
+
+r_values15 = np.array(r_values15)
+v_values15 = np.array(v_values15)
+
+x_values12 = r_values12[:, 0]
+y_values12 = r_values12[:, 1]
+
+x_values15 = r_values15[:, 0]
+y_values15 = r_values15[:, 1]
 
 fig1 = plt.figure()
 ax1 = fig1.add_axes([0.12, 0.12, 0.80, 0.80])
 ax1.plot(0, 0, marker='*', color='orange',
          markersize=12, label='Central mass')
-ax1.plot(x_values, y_values, label = 'Orbits')
+ax1.plot(x_values12, y_values12, label = 'Inital speed v = 1.2')
+ax1.plot(x_values15, y_values15, label = 'Initial speed v = 1.5')
+
 ax1.set_xlabel('x')
 ax1.set_ylabel('y')
-ax1.set_title('Circular Orbit Trajectory')
+ax1.set_title('Orbit Trajectories for Different Initial Speeds')
+
 # same visible scale for x and y
 ax1.set_aspect('equal', adjustable='box')
 ax1.legend()
@@ -72,8 +95,8 @@ plt.show()
 
 fig2 = plt.figure()
 ax2 = fig2.add_axes([0.12, 0.12, 0.80, 0.80])
-ax2.plot(t_values, x_values, label = 'x(t)')
-ax2.plot(t_values, y_values, label = 'y(t)')
+ax2.plot(t_values, x_values12, label = 'x(t)')
+ax2.plot(t_values, y_values12, label = 'y(t)')
 ax2.set_xlim(0, t10)
 ax2.set_xlabel('Time t')
 ax2.set_ylabel('Position')
@@ -84,35 +107,35 @@ plt.show()
 
 #Energie vs time 
 
-K_values = []
-U_values = []
-E_values = []
+K_values12 = []
+U_values12 = []
+E_values12 = []
 
-for iters in range(len(t_values)): 
+for iters in range(len(t_values12)): 
 
 
     K = 1/2 * M * np.sum(v_values12[iters]**2)
 
     # gibt mir den betreag des r Vektors
-    r_magnitude = np.linalg.norm(r_values[iters])
+    r_magnitude = np.linalg.norm(r_values12[iters])
 
     U = - (G*M*m) / r_magnitude
     E = K + U 
 
-    K_values.append(K)
-    U_values.append(U)
-    E_values.append(E)
+    K_values12.append(K)
+    U_values12.append(U)
+    E_values12.append(E)
 
-K_values = np.array(K_values)
-U_values = np.array(U_values)
-E_values = np.array(E_values)
+K_values = np.array(K_values12)
+U_values = np.array(U_values12)
+E_values = np.array(E_values12)
 
 
 fig3 = plt.figure()
 ax3 = fig3.add_axes([0.12, 0.12, 0.80, 0.80])
-ax3.plot(t_values, K_values, label = 'kinetic energy')
-ax3.plot(t_values, U_values, label = 'potential energy')
-ax3.plot(t_values, E_values, label = 'total mechanical ernergy')
+ax3.plot(t_values, K_values12, label = 'kinetic energy')
+ax3.plot(t_values, U_values12, label = 'potential energy')
+ax3.plot(t_values, E_values12, label = 'total mechanical ernergy')
 ax3.set_xlabel('Time t')
 ax3.set_ylabel('Energy')
 ax3.set_title('K(t), U(t) and E(t)')
