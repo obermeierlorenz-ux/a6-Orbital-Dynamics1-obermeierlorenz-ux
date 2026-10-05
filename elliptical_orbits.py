@@ -128,7 +128,53 @@ def calculate_energy(r_values,v_values) :
 
     return np.array(K_values), np.array(U_values), np.array(E_values)
 
-
 #
 K_values08, U_values08, E_values08 = calculate_energy(r_values08, v_values08)
 K_values12, U_values12, E_values12 = calculate_energy(r_values12, v_values12)
+
+
+# distance from the central mass and speed
+
+r_magnitude08 = np.linalg.norm(r_values08)
+r_magnitude12 = np.linalg.norm(r_values12)
+
+speed08 = np.linalg.norm(v_values08)
+speed12 = np.linalg.norm(v_values12)
+
+# measure the period from repeated periapsis locations
+
+def measure_period(t_values,r_magnitude):
+
+    periapsis_times = []
+
+    for i in range(1, len(r_magnitude) - 1):
+
+        if r_magnitude[i] <r_magnitude[i - 1] and r_magnitude[i] <r_magnitude[i + 1]:
+
+            periapsis_times.append(t_values[i])
+
+    periapsis_times = np.array(periapsis_times)
+
+    periods = np.diff(periapsis_times)
+
+    return np.mean(periods)
+
+
+
+measured_period08 = measure_period(t_values08, r_magnitude08)
+measured_period12 = measure_period(t_values12, r_magnitude12)
+
+fractional_error08 = abs(measured_period08 - T_e08) / T_e08
+fractional_error12 = abs(measured_period12 - T_e12) / T_e12
+
+
+print('v = 0.8')
+print('Approximate periapsis distance:', np.min(r_magnitude08))
+print('Approximate apoapsis distance:', np.max(r_magnitude08))
+print('Measured period:', measured_period08)
+print('Fractional period error:', fractional_error08)
+print('v = 1.2')
+print('Approximate periapsis distance:', np.min(r_magnitude12))
+print('Approximate apoapsis distance:', np.max(r_magnitude12))
+print('Measured period:', measured_period12)
+print('Fractional period error:', fractional_error12)
