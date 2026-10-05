@@ -135,15 +135,18 @@ K_values12, U_values12, E_values12 = calculate_energy(r_values12, v_values12)
 
 # distance from the central mass and speed
 
-r_magnitude08 = np.linalg.norm(r_values08)
-r_magnitude12 = np.linalg.norm(r_values12)
+r_magnitude08 = np.linalg.norm(r_values08 ,axis=1)
+r_magnitude12 = np.linalg.norm(r_values12, axis=1)
 
-speed08 = np.linalg.norm(v_values08)
-speed12 = np.linalg.norm(v_values12)
+speed08 = np.linalg.norm(v_values08, axis=1)
+speed12 = np.linalg.norm(v_values12, axis=1)
+
 
 # measure the period from repeated periapsis locations
 
+
 def measure_period(t_values,r_magnitude):
+
 
     periapsis_times = []
 
@@ -167,14 +170,82 @@ measured_period12 = measure_period(t_values12, r_magnitude12)
 fractional_error08 = abs(measured_period08 - T_e08) / T_e08
 fractional_error12 = abs(measured_period12 - T_e12) / T_e12
 
-
+#
+print()
 print('v = 0.8')
 print('Approximate periapsis distance:', np.min(r_magnitude08))
 print('Approximate apoapsis distance:', np.max(r_magnitude08))
 print('Measured period:', measured_period08)
 print('Fractional period error:', fractional_error08)
 print('v = 1.2')
+
+print()
 print('Approximate periapsis distance:', np.min(r_magnitude12))
 print('Approximate apoapsis distance:', np.max(r_magnitude12))
 print('Measured period:', measured_period12)
 print('Fractional period error:', fractional_error12)
+
+#plots
+# paired trajectory plot
+
+#v = 0.8
+fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+ax1.plot(0, 0, marker='*', color='orange',markersize=12, label='Central mass')
+ax1.plot(r_0[0], r_0[1], marker='o', color='green',markersize=6, label='Initial point')
+
+ax1.plot(x_values08, y_values08, label='Orbit')
+
+ax1.set_xlabel('x')
+ax1.set_ylabel('y')
+ax1.set_title('Elliptical Orbit: v = 0.8')
+ax1.set_aspect('equal', adjustable='box')
+ax1.grid()
+ax1.legend()
+
+#v = 1.2
+ax2.plot(0, 0, marker='*', color='orange',markersize=12, label='Central mass')
+ax2.plot(r_0[0], r_0[1], marker='o', color='green',markersize=6, label='Initial point')
+
+ax2.plot(x_values12, y_values12, label='Orbit')
+
+ax2.set_xlabel('x')
+ax2.set_ylabel('y')
+ax2.set_title('Elliptical Orbit: v = 1.2')
+ax2.set_aspect('equal', adjustable='box')
+ax2.grid()
+ax2.legend()
+
+plt.tight_layout()
+plt.show()
+
+
+# energy plots
+
+#2 plots in einem :) 
+fig2, (ax3, ax4) = plt.subplots(1, 2, figsize=(11, 4))
+
+#Energie for v = 0.8
+ax3.plot(t_values08, K_values08, label='Kinetic energy K')
+ax3.plot(t_values08, U_values08, label='Potential energy U')
+ax3.plot(t_values08, E_values08, label='Total energy E')
+ax3.set_xlabel('Time t')
+ax3.set_ylabel('Energy')
+ax3.set_title('Energy: v = 0.8')
+ax3.grid()
+ax3.legend()
+
+#energy for v = 1.2
+ax4.plot(t_values12, K_values12, label='Kinetic energy K')
+ax4.plot(t_values12, U_values12, label='Potential energy U')
+ax4.plot(t_values12, E_values12, label='Total energy E')
+
+ax4.set_xlabel('Time t')
+ax4.set_ylabel('Energy')
+ax4.set_title('Energy: v = 1.2')
+ax4.grid()
+ax4.legend()
+
+plt.tight_layout()
+plt.show()
+
