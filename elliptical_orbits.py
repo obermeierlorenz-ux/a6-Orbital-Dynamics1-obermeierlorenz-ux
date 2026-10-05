@@ -249,3 +249,45 @@ ax4.legend()
 plt.tight_layout()
 plt.show()
 
+
+# distance from central mass
+
+fig3, (ax5, ax6) = plt.subplots(1, 2, figsize=(11, 4))
+
+ax5.plot(t_values08, r_magnitude08)
+ax5.set_xlabel('Time t')
+ax5.set_ylabel('Distance r(t)')
+ax5.set_title('Distance from Central Mass: v = 0.8')
+ax5.grid()
+
+
+ax6.plot(t_values12, r_magnitude12)
+ax6.set_xlabel('Time t')
+ax6.set_ylabel('Distance r(t)')
+ax6.set_title('Distance from Central Mass: v = 1.2')
+ax6.grid()
+
+plt.tight_layout()
+plt.show()
+
+
+#speed versus time
+#v = 0.8
+fig4, (ax7, ax8) = plt.subplots(1, 2, figsize=(11, 4))
+
+ax7.plot(t_values08, speed08)
+ax7.set_xlabel('Time t')
+ax7.set_ylabel('Speed')
+ax7.set_title('Speed versus Time: v = 0.8')
+ax7.grid()
+
+#v = 1.2
+
+ax8.plot(t_values12, speed12)
+ax8.set_xlabel('Time t')
+ax8.set_ylabel('Speed')
+ax8.set_title('Speed versus Time: v = 1.2')
+ax8.grid()
+
+plt.tight_layout()
+plt.show()
